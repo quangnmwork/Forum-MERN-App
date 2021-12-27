@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "5c8a34ed14eb5c17645c9108",
+    "content": "Cras mollis nisi parturient mi nec aliquet suspendisse sagittis eros condimentum scelerisque taciti mattis praesent feugiat eu nascetur a tincidunt",
+    "rating": 5,
+    "date": "2021-06-12T09:00:00.000Z",
+    "userId": "5c8a1e1a2f8fb814b56fa183",
+    "blogId": "5c8a34ed14eb5c17645c9108"
+  },
+  {
+    "_id": "5c8a355b14eb5c17645c9109",
+    "content": "Tempus curabitur faucibus auctor bibendum duis gravida tincidunt litora himenaeos facilisis vivamus vehicula potenti semper fusce suspendisse sagittis!",
+    "rating": 4,
+    "date": "2021-06-15T09:00:00.000Z",
+    "userId": "5c8a1e1a2f8fb814b56fa183",
+    "blogId": "5c8a34ed14eb5c17645c9108"
+  },
+  {
+    "_id": "5c8a359914eb5c17645c910a",
+    "content": "Convallis turpis porttitor sapien ad urna efficitur dui vivamus in praesent nulla hac non potenti!",
+    "rating": 3,
+    "date": "2021-06-16T09:00:00.000Z",
+    "userId": "5c8a1e1a2f8fb814b56fa183",
+    "blogId": "5c8a355b14eb5c17645c9109"
+  }
+]
