@@ -5,6 +5,7 @@ const router = express.Router();
 
 
 router.post('/signup', authController.signup);
+router.post("/confirm/:confirmationCode", authController.verifyUser);
 router
     .route('/')
     .get(userController.getAllUsers);

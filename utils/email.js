@@ -2,11 +2,11 @@ const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 
 dotenv.config({ path: "config.env" });
-
+console.log(process.env.EMAIL_PASSWORD, process.env.EMAIL_USERNAME);
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
-    this.firstName = user.name.split(" ")[0];
+    this.firstName = user.name;
     this.url = url;
     this.from = `From admin`;
   }
@@ -14,11 +14,14 @@ module.exports = class Email {
     return nodemailer.createTransport({
       service: "Gmail",
       host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
   }
