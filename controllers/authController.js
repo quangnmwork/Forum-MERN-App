@@ -10,7 +10,7 @@ const createToken = id => {
   });
 };
 
-const sendToken = async (user, statusCode, req, res, email) => {
+const sendToken = async (user, statusCode, req, res) => {
   const token = createToken(user._id);
   console.log("token: ", token);
   res.cookie("jwt", token, {
@@ -19,8 +19,9 @@ const sendToken = async (user, statusCode, req, res, email) => {
     secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   });
   user.password = undefined;
-  user.confirmationCode = token;
-  const url = `${req.protocol}://${req.get("host")}/confirm/${token}`;
+  await User.findByIdAndUpdate(user._id, { confirmationCode: token });
+  console.log(user.email, user._id);
+  const url = `${req.protocol}://${req.get("host")}/api/v1/users/confirm/${token}`;
   await new Email(user, url).sendMail();
   res.status(statusCode).json({
     status: "success",
@@ -39,10 +40,11 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
-  await sendToken(201, newUser, req, res);
+  await sendToken(newUser, 201, req, res);
 });
 
 exports.verifyUser = catchAsync(async (req, res, next) => {
+  console.log(req.params.confirmationCode);
   const user = await User.findOne({ confirmationCode: req.params.confirmationCode });
   if (!user) {
     return next(new AppError("Không tìm thấy người dùng", 404));

@@ -5,9 +5,11 @@ const authController = require("./../controllers/authController");
 const router = express.Router();
 
 router.post("/signup", authController.signup);
-router.post("/confirm/:confirmationCode", authController.verifyUser);
+router.get("/confirm/:confirmationCode", authController.verifyUser);
 
 // end authencation routes
+
+// isAuth = true
 
 router.get("/", (req, res, next) => {
   res.status(200).json({
