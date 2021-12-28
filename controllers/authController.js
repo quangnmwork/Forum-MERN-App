@@ -1,9 +1,10 @@
-const { promisify } = require('util');
+const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("./../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Email = require("./../utils/email");
+const crypto = require("crypto");
 
 const createToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -21,16 +22,11 @@ const sendToken = async (user, statusCode, req, res, type) => {
   });
   user.password = undefined;
   await User.findByIdAndUpdate(user._id, { confirmationCode: token });
-<<<<<<< HEAD
   console.log(user.email, user._id);
-  if (type == 'sign up') {
+  if (type == "sign up") {
     const url = `${req.protocol}://${req.get("host")}/api/v1/users/confirm/${token}`;
     await new Email(user, url).sendMail();
   }
-=======
-  const url = `${req.protocol}://${req.get("host")}/api/v1/users/confirm/${token}`;
-  await new Email(user, url).sendMail();
->>>>>>> 4baf91a3a8f7a9ca4f8dd34c30dc6d147c13fc25
   res.status(statusCode).json({
     status: "success",
     token,
@@ -48,64 +44,119 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
-  await sendToken(newUser, 201, req, res, type = 'sign up');
+  await sendToken(newUser, 201, req, res, (type = "sign up"));
 });
 
 exports.verifyUser = catchAsync(async (req, res, next) => {
-<<<<<<< HEAD
-=======
-
->>>>>>> 4baf91a3a8f7a9ca4f8dd34c30dc6d147c13fc25
   const user = await User.findOne({ confirmationCode: req.params.confirmationCode });
   console.log(user);
   if (!user) {
     return next(new AppError("Không tìm thấy người dùng", 404));
   }
-<<<<<<< HEAD
-  await User.findOneAndUpdate(user.id, {isAuth:true});
+  await User.findByIdAndUpdate(user._id, { isAuth: true });
   console.log(user);
   res.status(200).json({
     message: "Successs",
   });
-=======
-  user.isAuth = true;
-  res.redirect("/login");
->>>>>>> 4baf91a3a8f7a9ca4f8dd34c30dc6d147c13fc25
 });
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(req.body)
+  console.log(req.body);
   if (!email || !password) {
     return next(new AppError("Nhập đầy đủ email và password"));
   }
-  const user = await User.findOne({ email }).select('+password')
+  const user = await User.findOne({ email }).select("+password");
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Tài khoản hoặc mật khẩu không đúng"));
   }
   if (!user.isAuth) {
     return next(new AppError("Bạn chưa xác thực email", 401));
   }
-  sendToken(user, 200, req, res, type = 'login');
+  sendToken(user, 200, req, res, (type = "login"));
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
-  if (req.headers.authorization && req.header.authorization.startsWith('Bearer')) {
-    token = req.header.split(' ')[1]
-  }
-  else if (req.cookies.jwt){
-    token = req.cookies.jwt
+  if (req.headers.authorization && req.header.authorization.startsWith("Bearer")) {
+    token = req.header.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
   if (!token) return new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401);
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   const user = await User.findById(decoded.id);
-  if (!user){
+  if (!user) {
     return next(new AppError("Tài khoản không còn tồn tại", 401));
   }
-  if (user.changedPasswordAfter(decoded.iat)){
-    return next(new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại",401));
+  if (user.changedPasswordAfter(decoded.iat)) {
+    return next(new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401));
   }
   req.user = user;
   next();
+});
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(new AppError("403 Forbidden", 403));
+    }
+    next();
+  };
+};
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  //1 get user by email
+  const user = await User.findOne({ email: req.body.email });
+  // check if user exist
+  if (!user) {
+    return next(new AppError("Email không hợp lệ", 404));
+  }
+  // generate token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+  // send email for user
+  try {
+    const url = `${req.protocol}://${req.get("host")}/api/v1/users/resetPassword/${resetToken}`;
+    await new Email(user, url).sendMail();
+    res.status(200).json({
+      status: "success",
+      message: "Vui lòng check email của bạn",
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(new AppError("Có lỗi xảy ra . Vui lòng thử lại"), 500);
+  }
+});
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new AppError("Phiên của bạn hiện tại đã hết hạn", 400));
+  }
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+  sendToken(user, 200, req, res, (type = "reset"));
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).select("+password");
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+    return next(new AppError("Mật khẩu hiện tại của bạn nhập không đúng", 401));
+  }
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+  sendToken(user, 200, req, res, (type = "update password"));
 });
