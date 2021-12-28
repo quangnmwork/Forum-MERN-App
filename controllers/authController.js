@@ -21,11 +21,16 @@ const sendToken = async (user, statusCode, req, res, type) => {
   });
   user.password = undefined;
   await User.findByIdAndUpdate(user._id, { confirmationCode: token });
+<<<<<<< HEAD
   console.log(user.email, user._id);
   if (type == 'sign up') {
     const url = `${req.protocol}://${req.get("host")}/api/v1/users/confirm/${token}`;
     await new Email(user, url).sendMail();
   }
+=======
+  const url = `${req.protocol}://${req.get("host")}/api/v1/users/confirm/${token}`;
+  await new Email(user, url).sendMail();
+>>>>>>> 4baf91a3a8f7a9ca4f8dd34c30dc6d147c13fc25
   res.status(statusCode).json({
     status: "success",
     token,
@@ -47,16 +52,25 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.verifyUser = catchAsync(async (req, res, next) => {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4baf91a3a8f7a9ca4f8dd34c30dc6d147c13fc25
   const user = await User.findOne({ confirmationCode: req.params.confirmationCode });
   console.log(user);
   if (!user) {
     return next(new AppError("Không tìm thấy người dùng", 404));
   }
+<<<<<<< HEAD
   await User.findOneAndUpdate(user.id, {isAuth:true});
   console.log(user);
   res.status(200).json({
     message: "Successs",
   });
+=======
+  user.isAuth = true;
+  res.redirect("/login");
+>>>>>>> 4baf91a3a8f7a9ca4f8dd34c30dc6d147c13fc25
 });
 
 exports.login = catchAsync(async (req, res, next) => {
