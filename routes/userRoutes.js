@@ -3,11 +3,19 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const router = express.Router();
 
+router.post("/signup", authController.signup);
+router.get("/confirm/:confirmationCode", authController.verifyUser);
 
-router.post('/signup', authController.signup);
-router.post("/confirm/:confirmationCode", authController.verifyUser);
-router
-    .route('/')
-    .get(userController.getAllUsers);
+// end authencation routes
+
+// isAuth = true
+// router.use(authController.checkVerification())
+
+router.get("/", (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+    message: "Success",
+  });
+});
 
 module.exports = router;
