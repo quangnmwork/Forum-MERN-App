@@ -8,9 +8,6 @@ router.get("/confirm/:confirmationCode", authController.verifyUser);
 
 // end authencation routes
 
-// isAuth = true
-// router.use(authController.checkVerification())
-
 router.get("/", (req, res, next) => {
   res.status(200).json({
     status: "success",
