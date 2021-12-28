@@ -20,7 +20,6 @@ const sendToken = async (user, statusCode, req, res) => {
   });
   user.password = undefined;
   await User.findByIdAndUpdate(user._id, { confirmationCode: token });
-  // console.log(user.email, user._id);
   const url = `${req.protocol}://${req.get("host")}/api/v1/users/confirm/${token}`;
   await new Email(user, url).sendMail();
   res.status(statusCode).json({
@@ -44,7 +43,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.verifyUser = catchAsync(async (req, res, next) => {
-  console.log(req.params.confirmationCode);
+
   const user = await User.findOne({ confirmationCode: req.params.confirmationCode });
   if (!user) {
     return next(new AppError("Không tìm thấy người dùng", 404));
@@ -52,3 +51,13 @@ exports.verifyUser = catchAsync(async (req, res, next) => {
   user.isAuth = true;
   res.redirect("/login");
 });
+
+exports.checkVerification = () =>{
+    return (req,res,next) => {
+        console.log(req.user)
+        if (!req.user.isAuth){
+            return next(new AppError("Không có quyền truy cập",401));
+        }
+        next();
+    };
+};
