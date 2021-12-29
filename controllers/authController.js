@@ -26,6 +26,14 @@ const sendToken = async (user, statusCode, req, res, type) => {
   if (type == "sign up") {
     const url = `${req.protocol}://${req.get("host")}/api/v1/users/confirm/${token}`;
     await new Email(user, url).sendMail();
+    res.status(statusCode).json({
+      status: "success",
+      token,
+      message: "Vui lòng check email của bạn",
+      data: {
+        user,
+      },
+    });
   }
   res.status(statusCode).json({
     status: "success",
@@ -49,12 +57,13 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 exports.verifyUser = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ confirmationCode: req.params.confirmationCode });
-  console.log(user);
+  // console.log(user);
   if (!user) {
-    return next(new AppError("Không tìm thấy người dùng", 404));
+    return next(new AppError("Phiên của bạn đã hết hạn", 404));
   }
   await User.findByIdAndUpdate(user._id, { isAuth: true });
-  console.log(user);
+  await User.findByIdAndUpdate(user._id, { confirmationCode: undefined });
+  // console.log(user);
   res.status(200).json({
     message: "Successs",
   });
@@ -70,9 +79,9 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Tài khoản hoặc mật khẩu không đúng"));
   }
-  if (!user.isAuth) {
-    return next(new AppError("Bạn chưa xác thực email", 401));
-  }
+  // if (!user.isAuth) {
+  //   return next(new AppError("Bạn chưa xác thực email", 401));
+  // }
   sendToken(user, 200, req, res, (type = "login"));
 });
 
@@ -93,6 +102,17 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401));
   }
   req.user = user;
+  next();
+});
+
+exports.resendEmail = catchAsync(async (req, res, next) => {
+  await sendToken(req.user, 201, req, res, (type = "sign up"));
+});
+
+exports.checkAuth = catchAsync(async (req, res, next) => {
+  if (!req.user.isAuth) {
+    return next(new AppError("Bạn chưa xác thực email", 401));
+  }
   next();
 });
 
