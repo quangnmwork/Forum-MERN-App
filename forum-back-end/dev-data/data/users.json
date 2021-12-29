@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "5c8a1d5b0190b214360dc057",
+    "name": "Admin",
+    "email": "flaskteam10@gmail.com",
+    "role": "admin",
+    "active": true,
+    "avatar": "user-avatar-1",
+    "password": "admin123"
+  },
+  {
+    "_id": "5c8a1dfa2f8fb814b56fa181",
+    "name": "Quang Nguyen",
+    "email": "quang@gmail.com",
+    "role": "user",
+    "active": true,
+    "avatar": "user-avatar-2.jpg",
+    "password": "user123"
+  },
+  {
+    "_id": "5c8a1e1a2f8fb814b56fa182",
+    "name": "Minh Ho",
+    "email": "minh@gmail.com",
+    "role": "user",
+    "active": true,
+    "avatar": "user-avatar-3.jpg",
+    "password": "user123"
+  },
+  {
+    "_id": "5c8a1e1a2f8fb814b56fa183",
+    "name": "Viewer",
+    "email": "viewer@gmail.com",
+    "role": "user",
+    "active": true,
+    "avatar": "user-avatar-3.jpg",
+    "password": "user123"
+  }
+]
