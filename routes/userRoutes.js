@@ -19,8 +19,8 @@ router.get("/resendEmail", authController.resendEmail);
 router.use(authController.checkAuth);
 
 router.patch("/updatePassword", authController.updatePassword);
-router.get("/getUser", userController.getUserId, userController.getUserProfile);
-router.patch("/updateProfile", userController.updateUserProfile);
+router.get("/getUserProfile", userController.getUserId, userController.getUserProfile);
+router.patch("/updateUserProfile", userController.uploadUserPhoto, userController.updateUserProfile);
 
 // for admin only
 

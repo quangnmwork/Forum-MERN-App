@@ -45,6 +45,9 @@ const userSchema = new mongoose.Schema(
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
+    aboutMe: String,
+    contactLink: String,
+    phoneNumber: String,
     active: {
       type: Boolean,
       default: true,

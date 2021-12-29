@@ -2,6 +2,8 @@ const User = require("./../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const factory = require("./handleFactory");
+const cloudinary = require("./../utils/cloudinary");
+const upload = require("./../utils/multer");
 
 const filterObj = (obj, ...otherFields) => {
   const resObj = {};
@@ -21,12 +23,12 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.uploadUserPhoto = upload.single("avatar");
+
 exports.getUserId = catchAsync(async (req, res, next) => {
   req.params.id = req.user.id;
   next();
 });
-
-exports.getUserProfile = factory.getOne(User);
 
 exports.updateUserProfile = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
@@ -34,7 +36,19 @@ exports.updateUserProfile = catchAsync(async (req, res, next) => {
   }
 
   // Filter object want to update
-  const filteredBody = filterObj(req.body, "name", "email");
+  const filteredBody = filterObj(req.body, "name", "email", "phoneNumber", "contactLink", "aboutMe");
+  if (req.file) {
+    const result = await cloudinary.uploader.upload(
+      req.file.path,
+      {
+        eager: [{ width: 400, height: 300, crop: "pad" }],
+      },
+      function (error, result) {
+        // console.log(result, error);
+      }
+    );
+    filteredBody.avatar = result.secure_url;
+  }
 
   // update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
@@ -58,3 +72,5 @@ exports.disableUser = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.getUserProfile = factory.getOne(User);
