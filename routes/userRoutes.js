@@ -5,18 +5,14 @@ const router = express.Router();
 
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
-router.get("/confirm/:confirmationCode", authController.verifyUser);
+router.get("/logout", authController.logout);
 
 // changed,reset password route
 router.post("/forgotPassword", authController.forgotPassword);
-router.patch("/resetPassword/:token", authController.resetPassword);
+router.patch("/resetPassword", authController.resetPassword);
 
 // end authencation routes
 router.use(authController.protect);
-
-router.get("/resendEmail", authController.resendEmail);
-
-router.use(authController.checkAuth);
 
 router.patch("/updatePassword", authController.updatePassword);
 router.get("/getUserProfile", userController.getUserId, userController.getUserProfile);
