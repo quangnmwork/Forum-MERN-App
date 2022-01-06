@@ -1,54 +1,43 @@
-import {
-  FormControl,
-  FormLabel,
-  HStack,
-  Input,
-  Box,
-  Text,
-  Image,
-  Flex,
-  Button,
-  FormErrorMessage,
-} from "@chakra-ui/react";
-import React, { useState, useRef } from "react";
+import React from "react";
+import { FormControl, FormLabel, Input, Box, Text, Image, Flex, Button, FormErrorMessage } from "@chakra-ui/react";
+import { useState, useRef } from "react";
 import AbsCenter from "../layout/absCenter";
-import { RepositoryFactory } from "./../../api-factory/repositoryFactory";
-import Router from "next/router";
+import { RepositoryFactory } from "../../api-factory/repositoryFactory";
 import FormBrand from "../form-utils/FormBrand";
-
+import Router from "next/router";
 const userRespository = RepositoryFactory.get("users");
 
-const FormSignUp = () => {
+const FormResetPassword = () => {
   const [submitErr, setSubmitErr] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-  const emailInput = useRef("");
   const passwordInput = useRef("");
-  const nameInput = useRef("");
+  const codeInput = useRef("");
   const passwordConfirmInput = useRef("");
-  const submitLoginHandler = async e => {
+  const submitResetHandler = async e => {
     try {
       e.preventDefault();
-      const email = emailInput.current.value;
       const password = passwordInput.current.value;
-      const name = nameInput.current.value;
+      const resetToken = codeInput.current.value;
       const passwordConfirm = passwordConfirmInput.current.value;
-      console.log(email, password, name, passwordConfirm);
-      if (!email.trim() || !password.trim() || !name.trim() || !passwordConfirm.trim()) {
+      console.log(resetToken, password, passwordConfirm);
+      if (!password.trim() || !resetToken.trim() || !passwordConfirm.trim()) {
         throw new Error("Vui lòng điền đầy đủ thông tin");
-      } else if (!email.includes("@")) {
-        throw new Error("Email không hợp lệ");
       } else if (password.length < 6) {
         throw new Error("Mật khẩu có độ dài ít nhất là 6");
       } else if (password != passwordConfirm) {
         throw new Error("Mật khẩu xác nhận không khớp");
       }
       setIsLoading(true);
-      const res = await userRespository.signup({ name, email, password, passwordConfirm });
-      if (res.status == 201) {
-        setErrMessage(res.data.message);
+      const res = await userRespository.resetPassword({ resetToken, password, passwordConfirm });
+      if (res.status == 200) {
+        setErrMessage("Đổi mật khẩu thành công");
         setSubmitErr(false);
+        setTimeout(() => {
+          Router.replace("/");
+        }, 2000);
       }
+      console.log(res);
       setIsLoading(false);
     } catch (err) {
       setSubmitErr(true);
@@ -58,7 +47,6 @@ const FormSignUp = () => {
       } else if (err.response == null) {
         setErrMessage(err.message);
       }
-
       setIsLoading(false);
     }
   };
@@ -67,25 +55,7 @@ const FormSignUp = () => {
     <Box width={"full"} height={"full"} position={"relative"}>
       <AbsCenter top={"50%"}>
         <Box w={{ base: "2xl", md: "3xl" }}>
-          <Flex justifyContent={"center"} alignItems={"center"} direction={"column"} gap={"10"}>
-            <FormBrand />
-            <Text fontWeight={"bold"} fontSize={"4xl"}>
-              Đăng kí tài khoản của bạn
-            </Text>
-            <HStack fontSize={"2xl"} fontWeight={"bold"}>
-              <Text>Đã có tài khoản?</Text>
-              <Text
-                color={"cyan.500"}
-                cursor={"pointer"}
-                _hover={{ textDecoration: "underline" }}
-                onClick={() => {
-                  Router.replace("/login");
-                }}
-              >
-                Đăng nhập ngay
-              </Text>
-            </HStack>
-          </Flex>
+          <FormBrand />
         </Box>
         <FormControl
           shadow={"lg"}
@@ -100,7 +70,7 @@ const FormSignUp = () => {
           <FormControl isInvalid={submitErr == true ? true : false}>
             <FormControl isRequired>
               <FormLabel fontSize={"2xl"} htmlFor="name">
-                Tên người dùng
+                Code
               </FormLabel>
               <Input
                 isRequired={true}
@@ -109,37 +79,17 @@ const FormSignUp = () => {
                 fontSize={"2xl"}
                 py={"8"}
                 px={"5"}
-                placeholder="Nguyễn Văn A"
                 onChange={() => {
                   setSubmitErr(false);
                   setErrMessage("");
                 }}
-                ref={nameInput}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel fontSize={"2xl"} htmlFor="email">
-                Email
-              </FormLabel>
-              <Input
-                isRequired={true}
-                id="email"
-                type="email"
-                fontSize={"2xl"}
-                py={"8"}
-                px={"5"}
-                placeholder="you@example.com"
-                ref={emailInput}
-                onChange={() => {
-                  setSubmitErr(false);
-                  setErrMessage("");
-                }}
+                ref={codeInput}
               />
             </FormControl>
             <FormControl mt={"8"} isRequired>
               <Flex justifyContent={"space-between"} alignItems={"center"}>
                 <FormLabel fontSize={"2xl"} htmlFor="password">
-                  Mật khẩu
+                  Mật khẩu mới
                 </FormLabel>
               </Flex>
               <Input
@@ -160,7 +110,7 @@ const FormSignUp = () => {
             <FormControl mt={"8"} isRequired>
               <Flex justifyContent={"space-between"} alignItems={"center"}>
                 <FormLabel fontSize={"2xl"} htmlFor="passwordConfirm">
-                  Xác nhận mật khẩu
+                  Xác nhận mật khẩu mới
                 </FormLabel>
               </Flex>
               <Input
@@ -188,9 +138,9 @@ const FormSignUp = () => {
                 fontSize={"2xl"}
                 color={"white"}
                 py={"8"}
-                onClick={submitLoginHandler}
+                onClick={submitResetHandler}
               >
-                Đăng kí
+                Xác nhận
               </Button>
             </Box>
             <Text
@@ -208,4 +158,4 @@ const FormSignUp = () => {
   );
 };
 
-export default FormSignUp;
+export default FormResetPassword;

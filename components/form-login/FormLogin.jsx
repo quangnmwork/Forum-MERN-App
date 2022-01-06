@@ -13,15 +13,17 @@ import {
 import React, { useState, useRef } from "react";
 import { FaFacebook, FaTwitter, FaGithub } from "react-icons/fa";
 import AbsCenter from "../layout/absCenter";
-import { RepositoryFactory } from "./../../api-factory/repositoryFactory";
-import Router from "next/router";
 
-const userRespository = RepositoryFactory.get("users");
+import Router from "next/router";
+import { useDispatch } from "react-redux";
+import { login, getUserProfile } from "../../redux/user/userSlice";
+import FormBrand from "../form-utils/FormBrand";
 
 const FormLogin = () => {
   const [submitErr, setSubmitErr] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const emailInput = useRef("");
+  const dispatch = useDispatch();
   const passwordInput = useRef("");
   const submitLoginHandler = async e => {
     try {
@@ -29,9 +31,15 @@ const FormLogin = () => {
       const email = emailInput.current.value;
       const password = passwordInput.current.value;
       setIsLoading(true);
-      const res = await userRespository.login({ email, password });
+      if (!email || !password) throw new Error("Tài khoản mật khẩu không được trống");
+      const res = await dispatch(login({ email, password }));
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
       setIsLoading(false);
+      Router.replace("/");
     } catch (err) {
+      console.log(err);
       setSubmitErr(true);
       setIsLoading(false);
     }
@@ -42,12 +50,7 @@ const FormLogin = () => {
       <AbsCenter top={"50%"}>
         <Box w={{ base: "2xl", md: "3xl" }}>
           <Flex justifyContent={"center"} alignItems={"center"} direction={"column"} gap={"10"}>
-            <Flex alignItems={"center"} gap={"5"}>
-              <Image boxSize="50px" objectFit="cover" src="/static/logo.svg" alt="logo" />
-              <Text fontWeight={"bold"} fontSize={"4xl"} color={"cyan.500"}>
-                MQ Forum
-              </Text>
-            </Flex>
+            <FormBrand />
             <Text fontWeight={"bold"} fontSize={"4xl"}>
               Đăng nhập vào tài khoản của bạn
             </Text>
@@ -101,7 +104,14 @@ const FormLogin = () => {
                 <FormLabel fontSize={"2xl"} htmlFor="password">
                   Mật khẩu
                 </FormLabel>
-                <Text fontSize={"2xl"} color={"cyan.400"} cursor={"pointer"}>
+                <Text
+                  fontSize={"2xl"}
+                  color={"cyan.400"}
+                  cursor={"pointer"}
+                  onClick={() => {
+                    Router.replace("/forgotPassword");
+                  }}
+                >
                   Quên mật khẩu?
                 </Text>
               </Flex>
@@ -118,7 +128,6 @@ const FormLogin = () => {
                   setSubmitErr(false);
                 }}
               />
-              {/* <FormErrorMessage fontSize={"2xl"}>{passwordErr}</FormErrorMessage> */}
             </FormControl>
             <Box mt={"8"}>
               <Button

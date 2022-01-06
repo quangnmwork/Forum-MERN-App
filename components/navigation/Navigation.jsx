@@ -1,12 +1,17 @@
 import { Box, Flex, Image, Text, Button } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavigationSearch from "./NavigationSearch";
 import NavigationButton from "./NavigationButton";
 import NavigationButtonResponsive from "./NavigationButtonResponsive";
 import NavigationIcon from "./NavigationIcon";
+import { useSelector, useDispatch } from "react-redux";
 
 const Navigation = () => {
+  const user = useSelector(state => state.user);
+  console.log("State user", user.isLogin);
+
   const [isShow, setIsShow] = useState(false);
+
   const showButtonIconHandler = () => {
     setIsShow(prevIsShow => !prevIsShow);
   };
@@ -25,20 +30,14 @@ const Navigation = () => {
         <Box>
           <Image boxSize="50px" objectFit="cover" src="/static/logo.svg" alt="logo" />
         </Box>
-        {/* <Box display={{ base: "block", md: "none" }}>
-          <Text fontSize={"3xl"} color={"cyan.500"} fontWeight={"bold"}>
-            QM Forum
-          </Text>
-        </Box> */}
+
         <Box>
           <NavigationSearch />
         </Box>
         <NavigationButton />
-        <Box display={{ base: "block", md: "none" }} onClick={showButtonIconHandler}>
-          <NavigationIcon isShow={isShow} />
-        </Box>
+        <NavigationIcon onClick={showButtonIconHandler} />
       </Flex>
-      <NavigationButtonResponsive isShow={isShow} />
+      <NavigationButtonResponsive />
     </Box>
   );
 };

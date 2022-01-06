@@ -8,7 +8,7 @@ const NavigationSearch = () => {
         <Input
           focusBorderColor="cyan.300"
           placeholder="Tìm kiếm chủ đề"
-          width={{ lg: "5xl", md: "4xl" }}
+          width={{ lg: "4xl", md: "2xl", base: "xl" }}
           minH={"40px"}
           fontSize={"3xl"}
         ></Input>

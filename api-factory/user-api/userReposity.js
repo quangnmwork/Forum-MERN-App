@@ -4,17 +4,19 @@ const resource = "users";
 
 export default {
   login(payload) {
-    console.log(repository);
     return repository.post(`${resource}/login`, payload);
   },
   signup(payload) {
     return repository.post(`${resource}/signup`, payload);
   },
-  resendEmail() {
-    return repository.get(`${resource}/resendEmail`);
+  forgotPassword(payload) {
+    return repository.post(`${resource}/forgotPassword`, payload);
   },
-  getProfile() {
-    return repository.get("/getUserProfile");
+  resetPassword(payload) {
+    return repository.patch(`${resource}/resetPassword`, payload);
+  },
+  getUserProfile() {
+    return repository.get(`${resource}/getUserProfile`);
   },
   updatePassword(payload) {
     return repository.patch(`${resource}/updatePassword`, payload);
