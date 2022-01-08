@@ -4,10 +4,10 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "config.env" });
 console.log(process.env.EMAIL_PASSWORD, process.env.EMAIL_USERNAME);
 module.exports = class Email {
-  constructor(user, url) {
+  constructor(user, code) {
     this.to = user.email;
     this.firstName = user.name;
-    this.url = url;
+    this.code = code;
     this.from = `From admin`;
   }
   createTransport() {
@@ -31,7 +31,7 @@ module.exports = class Email {
       to: this.to,
       subject: "Hello",
       text: "Hello world",
-      html: `<h1>Hello ${this.firstName}</h1>. Click to ${this.url} for authentication`,
+      html: `<h1>Hello ${this.firstName}</h1>. Your code is ${this.code}`,
     };
     await this.createTransport().sendMail(mailOptions);
   }

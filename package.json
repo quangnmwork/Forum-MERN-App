@@ -20,6 +20,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "mathjs": "^10.0.1",
     "mongoose": "^6.1.3",

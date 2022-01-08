@@ -57,10 +57,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       select: false,
     },
-    isAuth: {
-      type: boolean,
-      default: false,
-    },
   },
   {
     toJSON: { virtuals: true },
@@ -94,7 +90,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 };
 
 userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString("hex");
+  const resetToken = crypto.randomBytes(3).toString("hex");
 
   this.passwordResetToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
