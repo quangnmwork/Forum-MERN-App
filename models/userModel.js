@@ -2,7 +2,6 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
-const { boolean } = require("mathjs");
 
 const userSchema = new mongoose.Schema(
   {
@@ -63,6 +62,11 @@ const userSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+userSchema.virtual("blogs", {
+  ref: "Blog",
+  foreignField: "user",
+  localField: "_id",
+});
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();

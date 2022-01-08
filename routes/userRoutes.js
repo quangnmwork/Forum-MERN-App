@@ -12,17 +12,23 @@ router.post("/forgotPassword", authController.forgotPassword);
 router.patch("/resetPassword", authController.resetPassword);
 
 // end authencation routes
+
+// see profile of user
+
+router.get("/:id", userController.getUserById);
+
+//
+
 router.use(authController.protect);
 
 router.patch("/updatePassword", authController.updatePassword);
 router.get("/getUserProfile", userController.getUserId, userController.getUserProfile);
 router.patch("/updateUserProfile", userController.uploadUserPhoto, userController.updateUserProfile);
 
-
-router.get("/",(req, res, next) => {
-    res.status(200).json({
-        status: "success",
-    });
+router.get("/", (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+  });
 });
 
 // for admin only

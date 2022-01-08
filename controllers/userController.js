@@ -73,4 +73,5 @@ exports.disableUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUserProfile = factory.getOne(User);
+exports.getUserById = factory.getOne(User, { path: "blogs" }, (selectOptions = "-passwordChangedAt -email -role"));
+exports.getUserProfile = factory.getOne(User, { path: "blogs" });
