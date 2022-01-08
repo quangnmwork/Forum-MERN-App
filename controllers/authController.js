@@ -64,7 +64,8 @@ exports.protect = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  if (!token) return new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401);
+
+  if (!token) return next(new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401));
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   const user = await User.findById(decoded.id);
   if (!user) {

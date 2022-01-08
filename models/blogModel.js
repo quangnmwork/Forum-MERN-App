@@ -26,7 +26,7 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: [true, "Thumbnail không được trống"],
     },
-    ratingAvg: {
+    ratingsAvg: {
       type: Number,
       default: 0,
     },
@@ -45,10 +45,11 @@ const blogSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
 blogSchema.pre(/^find/, function (next) {
   this.populate({
     path: "user",
-    select: "-__v -passwordChangedAt -email -role",
+    select: "-__v -passwordChangedAt -email -role -contactLink -phoneNumber",
   });
   next();
 });

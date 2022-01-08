@@ -12,13 +12,7 @@ const filterObj = (obj, ...otherFields) => {
   return resObj;
 };
 
-exports.getAllBlogs = catchAsync(async (req, res, next) => {
-  const data = await Blog.find({});
-  res.status(200).json({
-    status: "success",
-    data: data,
-  });
-});
+exports.getAllBlogs = factory.getAll(Blog);
 exports.uploadBlogPhoto = upload.single("thumbnail");
 
 exports.updateBlog = catchAsync(async (req, res, next) => {

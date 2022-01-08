@@ -7,6 +7,7 @@ const userRouter = require("./routes/userRoutes");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const blogRouter = require("./routes/blogRoutes");
+const commentRouter = require("./routes/commentRoutes");
 const app = express();
 
 const corsConfig = {
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookieParser());
 
 //ROUTE
+app.use("/api/v1/comments", commentRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/blogs", blogRouter);
 
