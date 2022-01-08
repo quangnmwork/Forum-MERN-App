@@ -5,13 +5,23 @@ import NavigationButton from "./NavigationButton";
 import NavigationButtonResponsive from "./NavigationButtonResponsive";
 import NavigationIcon from "./NavigationIcon";
 import { useSelector, useDispatch } from "react-redux";
+import { getUserProfile } from "../../redux/user/userSlice";
 
 const Navigation = () => {
   const user = useSelector(state => state.user);
   console.log("State user", user.isLogin);
-
+  const [currentUser, setCurrentUser] = useState({});
+  const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
-
+  useEffect(() => {
+    try {
+      const getCurrentUser = async () => await dispatch(getUserProfile());
+      console.log(currentUser);
+      getCurrentUser().then(res => {
+        setCurrentUser(res.payload.data);
+      });
+    } catch (err) {}
+  }, []);
   const showButtonIconHandler = () => {
     setIsShow(prevIsShow => !prevIsShow);
   };
@@ -34,7 +44,7 @@ const Navigation = () => {
         <Box>
           <NavigationSearch />
         </Box>
-        <NavigationButton />
+        <NavigationButton currentUser={currentUser} />
         <NavigationIcon onClick={showButtonIconHandler} />
       </Flex>
       <NavigationButtonResponsive />

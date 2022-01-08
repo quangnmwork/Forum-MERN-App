@@ -10,14 +10,38 @@ export const login = createAsyncThunk("users/login", async (payload, thunkAPI) =
     console.log(payload);
     const { token } = await res.data;
     localStorage.setItem("token", `Bearer ${token}`);
+    console.log("already set token");
+    return res;
   } catch (err) {
     console.log(err);
+    throw new Error(err.response.data.message);
+  }
+});
+export const updatePassword = createAsyncThunk("users/updatePassword", async (payload, thunkAPI) => {
+  try {
+    const res = await userRespository.updatePassword(payload);
+    // console.log(payload);
+    const { token } = await res.data;
+    localStorage.setItem("token", `Bearer ${token}`);
+    return res;
+  } catch (err) {
+    // console.log(err.response);
     throw new Error(err.response.data.message);
   }
 });
 export const getUserProfile = createAsyncThunk("users/getUserProfile", async payload => {
   try {
     const res = await userRespository.getUserProfile(payload);
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err.response.data.message);
+  }
+});
+export const updateProfile = createAsyncThunk("users/updateProfile", async payload => {
+  try {
+    const res = await userRespository.updateProfile(payload);
+    console.log(res.data.data);
     return res.data.data;
   } catch (err) {
     console.log(err);
@@ -33,6 +57,7 @@ const userSlice = createSlice({
   reducers: {
     logout: state => {
       localStorage.removeItem("token");
+      state.currentUser = {};
       state.isLogin = false;
     },
   },
@@ -52,6 +77,19 @@ const userSlice = createSlice({
     },
     [login.rejected]: (state, action) => {
       state.isLogin = false;
+    },
+    [updatePassword.fulfilled]: (state, action) => {
+      state.isLogin = true;
+    },
+    [updatePassword.rejected]: (state, action) => {
+      state.isLogin = true;
+    },
+    [updateProfile.fulfilled]: (state, action) => {
+      state.isLogin = true;
+      state.currentUser = action.payload.user || {};
+    },
+    [updateProfile.rejected]: (state, action) => {
+      state.isLogin = true;
     },
   },
 });

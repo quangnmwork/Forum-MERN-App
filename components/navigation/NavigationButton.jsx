@@ -20,8 +20,8 @@ const NavigationButton = props => {
   const dispatch = useDispatch();
   console.log("Navigation button", user);
   const handleLoadedAvatar = () => {
-    if (!user.currentUser.avatar) return true;
-    else return user.currentUser.avatar && user.isLogin;
+    if (!props.currentUser.avatar) return true;
+    else return props.currentUser.avatar && user.isLogin;
   };
   return (
     <Fragment>
@@ -63,9 +63,9 @@ const NavigationButton = props => {
               <Avatar
                 name="Dan Abrahmov"
                 src={
-                  !user.currentUser.avatar
+                  !props.currentUser.avatar
                     ? "https://res.cloudinary.com/dsyigmpux/image/upload/v1640765880/ferj1kzaesrzmv0ulfoz.png"
-                    : user.currentUser.avatar
+                    : props.currentUser.avatar
                 }
               />
             </MenuButton>
