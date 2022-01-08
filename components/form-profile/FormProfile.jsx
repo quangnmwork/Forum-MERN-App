@@ -19,7 +19,7 @@ import { BsCameraFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { getUserProfile } from "./../../redux/user/userSlice";
 
-import { RepositoryFactory } from "../../api-factory/repositoryFactory";
+import withAuth from "../HOC/withAuth";
 import { updateProfile } from "./../../redux/user/userSlice";
 
 const FormProfile = () => {
@@ -38,8 +38,10 @@ const FormProfile = () => {
     try {
       const getCurrentUser = async () => await dispatch(getUserProfile());
       getCurrentUser().then(res => {
-        setCurrentUser(res.payload.data);
-        setCurrentAvatar(res.payload.data.avatar);
+        if (res.payload) {
+          setCurrentUser(res.payload.data);
+          setCurrentAvatar(res.payload.data.avatar);
+        }
       });
     } catch (err) {}
   }, []);
@@ -142,7 +144,7 @@ const FormProfile = () => {
               <FormLabel htmlFor="email" fontSize={"2xl"}>
                 Email
               </FormLabel>
-              <Input id="email" type="text" p={"5"} fontSize={"2xl"} value={currentUser.email} isDisabled />
+              <Input id="email" type="text" p={"5"} fontSize={"2xl"} defaultValue={currentUser.email} isDisabled />
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="intro" fontSize={"2xl"}>
@@ -212,4 +214,4 @@ const FormProfile = () => {
   );
 };
 
-export default FormProfile;
+export default withAuth(FormProfile);

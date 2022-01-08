@@ -13,7 +13,7 @@ import {
 import React, { useState, useRef } from "react";
 import { FaFacebook, FaTwitter, FaGithub } from "react-icons/fa";
 import AbsCenter from "../layout/absCenter";
-
+import withAuth from "../HOC/withAuth";
 import Router from "next/router";
 import { useDispatch } from "react-redux";
 import { login, getUserProfile } from "../../redux/user/userSlice";
@@ -191,4 +191,4 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+export default withAuth(FormLogin);

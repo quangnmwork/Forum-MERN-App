@@ -1,7 +1,7 @@
 import { Box, FormControl, FormLabel, Input, Button, Flex, Text } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import SideBar from "../sidebar/SideBar";
-
+import withAuth from "../HOC/withAuth";
 import { useDispatch } from "react-redux";
 import { updatePassword } from "./../../redux/user/userSlice";
 
@@ -114,4 +114,4 @@ const FormSecurity = () => {
   );
 };
 
-export default FormSecurity;
+export default withAuth(FormSecurity);

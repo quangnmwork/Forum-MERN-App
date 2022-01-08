@@ -35,6 +35,7 @@ export const getUserProfile = createAsyncThunk("users/getUserProfile", async pay
     return res.data.data;
   } catch (err) {
     console.log(err);
+    localStorage.removeItem("token");
     throw new Error(err.response.data.message);
   }
 });

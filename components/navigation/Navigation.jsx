@@ -15,11 +15,15 @@ const Navigation = () => {
   const [isShow, setIsShow] = useState(false);
   useEffect(() => {
     try {
-      const getCurrentUser = async () => await dispatch(getUserProfile());
-      console.log(currentUser);
-      getCurrentUser().then(res => {
-        setCurrentUser(res.payload.data);
-      });
+      if (localStorage.getItem("token")) {
+        const getCurrentUser = async () => await dispatch(getUserProfile());
+        console.log(currentUser);
+        getCurrentUser().then(res => {
+          if (res.payload) {
+            setCurrentUser(res.payload.data);
+          }
+        });
+      }
     } catch (err) {}
   }, []);
   const showButtonIconHandler = () => {
