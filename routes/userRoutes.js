@@ -15,14 +15,17 @@ router.patch("/resetPassword", authController.resetPassword);
 
 // see profile of user
 
-router.get("/:id", userController.getUserById);
+router.get("/userProfile/:id", userController.getUserById);
 
 //
 
 router.use(authController.protect);
 
+router.get("/:userId/follow", userController.followUser);
+router.get("/:userId/unFollow", userController.unFollowUser);
 router.patch("/updatePassword", authController.updatePassword);
 router.get("/getUserProfile", userController.getUserId, userController.getUserProfile);
+
 router.patch("/updateUserProfile", userController.uploadUserPhoto, userController.updateUserProfile);
 
 router.get("/", (req, res, next) => {

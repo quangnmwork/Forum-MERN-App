@@ -49,7 +49,7 @@ const blogSchema = new mongoose.Schema(
 blogSchema.pre(/^find/, function (next) {
   this.populate({
     path: "user",
-    select: "-__v -passwordChangedAt -email -role -contactLink -phoneNumber",
+    select: "-__v -passwordChangedAt -email -role -contactLink -phoneNumber -followers -following ",
   });
   next();
 });

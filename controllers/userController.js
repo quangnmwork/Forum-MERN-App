@@ -73,5 +73,43 @@ exports.disableUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUserById = factory.getOne(User, { path: "blogs" }, (selectOptions = "-passwordChangedAt -email -role"));
-exports.getUserProfile = factory.getOne(User, { path: "blogs" });
+exports.getUserById = factory.getOne(
+  User,
+  { path: "blogs followers following" },
+  (selectOptions = "-passwordChangedAt -email -role -followers.email -following.email")
+);
+exports.getUserProfile = factory.getOne(User, { path: "blogs followers following" });
+
+exports.followUser = catchAsync(async (req, res, next) => {
+  if (req.user.id == req.params.userId) {
+    return next(new AppError("Bạn không thể tự follow chính mình"), 401);
+  }
+  const user = await User.findById(req.params.userId);
+
+  if (user.followers.some(follower => follower.toString() == req.user.id)) {
+    return next(new AppError("Bạn đã follow người này rồi"), 401);
+  } else {
+    await User.updateOne({ _id: req.user.id }, { $addToSet: { following: user.id } });
+    await User.updateOne({ _id: user.id }, { $addToSet: { followers: req.user.id } });
+    res.status(200).json({
+      status: "sucess",
+    });
+  }
+});
+
+exports.unFollowUser = catchAsync(async (req, res, next) => {
+  if (req.user.id == req.params.userId) {
+    return next(new AppError("Bạn không thể tự unfollow chính mình"), 401);
+  }
+  const user = await User.findById(req.params.userId);
+
+  if (!user.followers.some(follower => follower.toString() == req.user.id)) {
+    return next(new AppError("Bạn chưa follow người này"), 401);
+  } else {
+    await User.updateOne({ _id: req.user.id }, { $pull: { following: user.id } });
+    await User.updateOne({ _id: user.id }, { $pull: { followers: req.user.id } });
+    res.status(200).json({
+      status: "sucess",
+    });
+  }
+});

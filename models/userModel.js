@@ -56,6 +56,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       select: false,
     },
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
@@ -66,6 +78,21 @@ userSchema.virtual("blogs", {
   ref: "Blog",
   foreignField: "user",
   localField: "_id",
+});
+
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "followers",
+    select: "-followers -following -email",
+  });
+  next();
+});
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "following",
+    select: "-followers -following -email",
+  });
+  next();
 });
 
 userSchema.pre("save", async function (next) {
