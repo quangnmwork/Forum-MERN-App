@@ -39,8 +39,8 @@ const FormProfile = () => {
       const getCurrentUser = async () => await dispatch(getUserProfile());
       getCurrentUser().then(res => {
         if (res.payload) {
-          setCurrentUser(res.payload.data);
-          setCurrentAvatar(res.payload.data.avatar);
+          setCurrentUser(res.payload);
+          setCurrentAvatar(res.payload.avatar);
         }
       });
     } catch (err) {}
@@ -98,7 +98,7 @@ const FormProfile = () => {
   return (
     <Flex h={"100%"}>
       <Sidebar />
-      <Box w={"25%"} ml={"20"} mt={10}>
+      <Box w={{ base: "30%", md: "25%" }} ml={"20"} mt={10}>
         <FormControl>
           <Flex direction={"column"} experimental_spaceY={"5"}>
             <Text fontSize={"2xl"} fontWeight={"bold"}>

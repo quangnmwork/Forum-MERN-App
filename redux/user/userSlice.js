@@ -65,7 +65,7 @@ const userSlice = createSlice({
   extraReducers: {
     [getUserProfile.fulfilled]: (state, action) => {
       // console.log(action);
-      state.currentUser = action.payload.data || {};
+      state.currentUser = action.payload || {};
       state.isLogin = true;
     },
     [getUserProfile.rejected]: (state, action) => {

@@ -6,29 +6,27 @@ import NavigationButtonResponsive from "./NavigationButtonResponsive";
 import NavigationIcon from "./NavigationIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../../redux/user/userSlice";
+import NavigationAvatar from "./NavigationAvatar";
 
 const Navigation = () => {
   const user = useSelector(state => state.user);
   console.log("State user", user.isLogin);
   const [currentUser, setCurrentUser] = useState({});
   const dispatch = useDispatch();
-  const [isShow, setIsShow] = useState(false);
   useEffect(() => {
     try {
       if (localStorage.getItem("token")) {
         const getCurrentUser = async () => await dispatch(getUserProfile());
-        console.log(currentUser);
+
         getCurrentUser().then(res => {
           if (res.payload) {
-            setCurrentUser(res.payload.data);
+            setCurrentUser(res.payload);
           }
         });
       }
     } catch (err) {}
   }, []);
-  const showButtonIconHandler = () => {
-    setIsShow(prevIsShow => !prevIsShow);
-  };
+
   return (
     <Box>
       <Flex
@@ -44,14 +42,13 @@ const Navigation = () => {
         <Box>
           <Image boxSize="50px" objectFit="cover" src="/static/logo.svg" alt="logo" />
         </Box>
-
-        <Box>
-          <NavigationSearch />
-        </Box>
-        <NavigationButton currentUser={currentUser} />
-        <NavigationIcon onClick={showButtonIconHandler} />
+        <NavigationSearch display={{ base: "none", md: "block" }} />
+        <NavigationButton />
+        <Flex alignItems={"center"} display={{ base: "flex", md: "none" }} gap={"5"}>
+          <NavigationAvatar currentUser={currentUser} />
+          <NavigationButtonResponsive />
+        </Flex>
       </Flex>
-      <NavigationButtonResponsive />
     </Box>
   );
 };
