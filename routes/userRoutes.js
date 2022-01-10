@@ -7,6 +7,8 @@ router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.get("/logout", authController.logout);
 
+router.get("/", userController.getAllUsers);
+
 // changed,reset password route
 router.post("/forgotPassword", authController.forgotPassword);
 router.patch("/resetPassword", authController.resetPassword);

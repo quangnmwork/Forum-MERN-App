@@ -83,14 +83,14 @@ userSchema.virtual("blogs", {
 userSchema.pre(/^find/, function (next) {
   this.populate({
     path: "followers",
-    select: "-followers -following -email",
+    select: "-followers -following -email -aboutMe -contactLink -phoneNumer -role",
   });
   next();
 });
 userSchema.pre(/^find/, function (next) {
   this.populate({
     path: "following",
-    select: "-followers -following -email",
+    select: "-followers -following -email -aboutMe -contactLink -phoneNumer -role",
   });
   next();
 });

@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
+const rateLimit = require("express-rate-limit");
 const cors = require("cors");
+const xss = require("xss-clean");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRoutes");
@@ -22,6 +24,15 @@ app.options("*", cors(corsConfig));
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!",
+});
+app.use("/api", limiter);
+app.use(xss());
+
 // Stripe webhook, BEFORE body-parser, because stripe needs the body as stream
 app.post("/webhook-checkout", bodyParser.raw({ type: "application/json" }));
 

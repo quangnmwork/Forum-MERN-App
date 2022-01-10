@@ -14,7 +14,7 @@ const filterObj = (obj, ...otherFields) => {
 };
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const data = await User.find({});
+  const data = await User.find({}).select("-email -role");
   res.status(200).json({
     status: "success",
     data: {
