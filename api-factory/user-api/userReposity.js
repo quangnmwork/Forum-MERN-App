@@ -25,9 +25,15 @@ export default {
     return repository.patch(`${resource}/updateUserProfile`, payload);
   },
   getUserProfileById(id) {
-    return repository.get(`${resource}/${id}`);
+    return repository.get(`${resource}/userProfile/${id}`);
   },
-  getAllUser() {
+  getAllUsers() {
     return repository.get(`${resource}`);
+  },
+  follow(id) {
+    return repository.get(`${resource}/${id}/follow`);
+  },
+  unFollow(id) {
+    return repository.get(`${resource}/${id}/unFollow`);
   },
 };

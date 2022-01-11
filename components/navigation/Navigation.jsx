@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 import NavigationSearch from "./NavigationSearch";
 import NavigationButton from "./NavigationButton";
 import NavigationButtonResponsive from "./NavigationButtonResponsive";
-import NavigationIcon from "./NavigationIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../../redux/user/userSlice";
 import NavigationAvatar from "./NavigationAvatar";
+import Router from "next/router";
 
 const Navigation = () => {
   const user = useSelector(state => state.user);
@@ -40,11 +40,19 @@ const Navigation = () => {
         shadow={"md"}
       >
         <Box>
-          <Image boxSize="50px" objectFit="cover" src="/static/logo.svg" alt="logo" />
+          <Image
+            boxSize="50px"
+            objectFit="cover"
+            src="/static/logo.svg"
+            alt="logo"
+            onClick={() => {
+              Router.replace("/");
+            }}
+          />
         </Box>
         <NavigationSearch display={{ base: "none", md: "block" }} />
         <NavigationButton />
-        <Flex alignItems={"center"} display={{ base: "flex", md: "none" }} gap={"5"}>
+        <Flex alignItems={"center"} display={user.isLogin ? "flex" : { base: "flex", md: "none" }} gap={"5"}>
           <NavigationAvatar currentUser={currentUser} />
           <NavigationButtonResponsive />
         </Flex>
