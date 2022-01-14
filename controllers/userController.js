@@ -86,7 +86,7 @@ exports.followUser = catchAsync(async (req, res, next) => {
   }
   const user = await User.findById(req.params.userId);
 
-  if (user.followers.some(follower => follower.toString() == req.user.id)) {
+  if (user.followers.some(follower => follower.id.toString() == req.user.id)) {
     return next(new AppError("Bạn đã follow người này rồi"), 401);
   } else {
     await User.updateOne({ _id: req.user.id }, { $addToSet: { following: user.id } });
@@ -103,7 +103,7 @@ exports.unFollowUser = catchAsync(async (req, res, next) => {
   }
   const user = await User.findById(req.params.userId);
 
-  if (!user.followers.some(follower => follower.toString() == req.user.id)) {
+  if (!user.followers.some(follower => follower.id.toString() == req.user.id)) {
     return next(new AppError("Bạn chưa follow người này"), 401);
   } else {
     await User.updateOne({ _id: req.user.id }, { $pull: { following: user.id } });

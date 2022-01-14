@@ -11,6 +11,7 @@ exports.getOne = (Model, popOptions, selectOptions) =>
     if (!doc) {
       return next(new AppError("Không có blog ứng với id này", 404));
     }
+    console.log(doc);
 
     res.status(200).json({
       status: "success",

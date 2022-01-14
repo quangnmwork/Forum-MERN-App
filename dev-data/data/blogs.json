@@ -1,14 +1,14 @@
 [
   {
     "_id": "5c8a34ed14eb5c17645c9108",
-    "content": "Hello every one , Today i will show you how to install devC IDE.",
+    "content": "",
     "releaseDate": "2021-06-19T09:00:00.000Z",
     "isFeatured": true,
     "thumbnail": "blog-thumbnail-1.jpg",
     "ratingsAvg": 4.5,
     "ratingsQuantify": 0,
     "category": "technology",
-    "userID": "5c8a1dfa2f8fb814b56fa181"
+    "user": "5c8a1dfa2f8fb814b56fa181"
   },
   {
     "_id": "5c8a355b14eb5c17645c9109",
@@ -19,7 +19,7 @@
     "ratingsAvg": 4.5,
     "ratingsQuantify": 0,
     "category": "exp",
-    "userID": "5c8a1e1a2f8fb814b56fa182"
+    "user": "5c8a1e1a2f8fb814b56fa182"
   },
   {
     "_id": "5c8a359914eb5c17645c910a",
@@ -30,6 +30,6 @@
     "ratingsAvg": 4.5,
     "ratingsQuantify": 0,
     "category": "other",
-    "userID": "5c8a1e1a2f8fb814b56fa182"
+    "user": "5c8a1e1a2f8fb814b56fa182"
   }
 ]

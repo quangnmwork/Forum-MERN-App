@@ -1,38 +1,62 @@
 [
   {
     "_id": "5c8a1d5b0190b214360dc057",
-    "name": "Admin",
-    "email": "flaskteam10@gmail.com",
-    "role": "admin",
+    "name": "Alex",
+    "email": "alex@gmail.com",
+    "role": "user",
     "active": true,
-    "avatar": "user-avatar-1",
-    "password": "admin123"
+    "password": "123456",
+    "phoneNumber": "0914115278",
+    "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada proin libero nunc consequat. Non tellus orci ac auctor."
   },
   {
     "_id": "5c8a1dfa2f8fb814b56fa181",
-    "name": "Quang Nguyen",
-    "email": "quang@gmail.com",
+    "name": "Batman",
+    "email": "batman@gmail.com",
     "role": "user",
     "active": true,
-    "avatar": "user-avatar-2.jpg",
-    "password": "user123"
+    "password": "123456",
+    "phoneNumber": "091411378",
+    "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada proin libero nunc consequat. Non tellus orci ac auctor."
   },
   {
     "_id": "5c8a1e1a2f8fb814b56fa182",
-    "name": "Minh Ho",
-    "email": "minh@gmail.com",
+    "name": "Jonas Scheddtman",
+    "email": "jonas@gmail.com",
     "role": "user",
     "active": true,
-    "avatar": "user-avatar-3.jpg",
-    "password": "user123"
+    "password": "123456",
+    "phoneNumber": "09155278",
+    "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada proin libero nunc consequat. Non tellus orci ac auctor."
   },
   {
     "_id": "5c8a1e1a2f8fb814b56fa183",
-    "name": "Viewer",
-    "email": "viewer@gmail.com",
+    "name": "Teresa",
+    "email": "Teresa@gmail.com",
     "role": "user",
     "active": true,
-    "avatar": "user-avatar-3.jpg",
-    "password": "user123"
+    "password": "123456",
+    "phoneNumber": "0914112278",
+    "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada proin libero nunc consequat. Non tellus orci ac auctor."
+  },
+  {
+    "_id": "5c8a1e1a2f8fb814b56fa189",
+    "name": "Emily Hunt",
+    "email": "emily@gmail.com",
+    "role": "user",
+    "active": true,
+    "password": "123456",
+    "phoneNumber": "091411518",
+    "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada proin libero nunc consequat. Non tellus orci ac auctor."
+  },
+  {
+    "_id": "5c8a1e1a2f8fb814b56fa193",
+    "name": "Mark Holland",
+    "email": "holland@gmail.com",
+    "role": "user",
+    "active": true,
+    "password": "123456",
+    "phoneNumber": "0914115273",
+    "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada proin libero nunc consequat. Non tellus orci ac auctor."
   }
 ]
