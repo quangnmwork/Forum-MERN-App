@@ -3,8 +3,8 @@ import repository from "./../repository";
 const resource = "blogs";
 
 export default {
-  getAllBlogs() {
-    return repository.get(`${resource}`);
+  getAllBlogs(params) {
+    return repository.get(`${resource}`, { params });
   },
   getBlog(id) {
     return repository.get(`${resource}/${id}`);

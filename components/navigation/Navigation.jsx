@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, Button, ButtonGroup } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import NavigationSearch from "./NavigationSearch";
 import NavigationButton from "./NavigationButton";
@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../../redux/user/userSlice";
 import NavigationAvatar from "./NavigationAvatar";
 import Router from "next/router";
-
+import { AddIcon } from "@chakra-ui/icons";
 const Navigation = () => {
   const user = useSelector(state => state.user);
   console.log("State user", user.isLogin);
@@ -53,6 +53,20 @@ const Navigation = () => {
         <NavigationSearch display={{ base: "none", md: "block" }} />
         <NavigationButton />
         <Flex alignItems={"center"} display={user.isLogin ? "flex" : { base: "flex", md: "none" }} gap={"5"}>
+          <Button
+            size={"xl"}
+            fontSize={"2xl"}
+            colorScheme={"cyan"}
+            px={"5"}
+            py={"3"}
+            color={"white"}
+            display={user.isLogin ? "block" : "none"}
+          >
+            <Flex alignItems={"center"} gap={"5"}>
+              <Text>Tạo bài viết</Text>
+              <AddIcon />
+            </Flex>
+          </Button>
           <NavigationAvatar currentUser={currentUser} />
           <NavigationButtonResponsive />
         </Flex>

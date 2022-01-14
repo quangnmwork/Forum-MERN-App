@@ -1,6 +1,13 @@
+const removeImports = require("next-remove-imports")();
+
+const MD = (phase, { defaultConfig }) => {
+  return removeImports({
+    ...defaultConfig,
+  });
+};
 module.exports = {
-  reactStrictMode: true,
-  env: {
-    customKey: "my-value",
+  MD,
+  images: {
+    domains: ["res.cloudinary.com"],
   },
 };
