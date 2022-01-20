@@ -3,7 +3,13 @@ import { Flex, Text, Icon, Link, Menu, MenuButton, MenuList, Slide } from "@chak
 
 const NavItem = ({ icon, title, active, navSize, onClick }) => {
   return (
-    <Flex mt={5} flexDir="column" w="100%" alignItems={navSize == "small" ? "center" : "flex-start"}>
+    <Flex
+      mt={5}
+      flexDir="column"
+      w="100%"
+      alignItems={navSize == "small" ? "center" : "flex-start"}
+      transition={"all 0.5s ease-in-out"}
+    >
       <Menu placement="right">
         <Link
           bgColor={active && "cyan.500"}

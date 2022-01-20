@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, Flex, Avatar, HStack } from "@chakra-ui/react";
+import { Box, Text, Flex, Avatar, HStack, Button } from "@chakra-ui/react";
 import style from "./reactMD.module.css";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
@@ -11,11 +11,13 @@ import { dracula } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import rehypeKatex from "rehype-katex";
 
 import Router from "next/router";
+
 const Blog = props => {
   const getUserId = e => {
     e.preventDefault();
     Router.replace(`/user/${e.target.dataset.id}`);
   };
+
   return (
     <Box width={{ xl: "60%", lg: "80%", base: "95%" }} mx={"auto"}>
       <Box fontSize={"8xl"} fontWeight={"bold"} width={"100%"} mt={"10"}>
@@ -29,7 +31,7 @@ const Blog = props => {
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <HStack gap={"4"}>
+        <HStack gap={"4"} align={"center"}>
           <Avatar src={props.blog.user.avatar || ""} size={"xl"} />
           <Text
             _hover={{ textDecoration: "underline", cursor: "pointer" }}

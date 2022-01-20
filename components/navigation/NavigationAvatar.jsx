@@ -26,9 +26,8 @@ const NavigationAvatar = props => {
       <SkeletonCircle isLoaded={handleLoadedAvatar}>
         <Flex alignItems={"center"}>
           <Menu>
-            <MenuButton as={Button} rounded={"full"} variant={"link"} cursor={"pointer"} minW={0}>
+            <MenuButton rounded={"full"} variant={"link"} cursor={"pointer"} minW={0}>
               <Avatar
-                name="Dan Abrahmov"
                 src={
                   !props.currentUser.avatar
                     ? "https://res.cloudinary.com/dsyigmpux/image/upload/v1640765880/ferj1kzaesrzmv0ulfoz.png"
@@ -37,6 +36,9 @@ const NavigationAvatar = props => {
               />
             </MenuButton>
             <MenuList>
+              <MenuItem fontSize={"2xl"} display={props.currentUser.role == "admin" ? "block" : "none"}>
+                Quản lý Forum
+              </MenuItem>
               <MenuItem
                 fontSize={"2xl"}
                 onClick={() => {

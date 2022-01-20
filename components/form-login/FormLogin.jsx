@@ -5,11 +5,18 @@ import {
   Input,
   Box,
   Text,
-  Image,
   Flex,
   Button,
   FormErrorMessage,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import React, { useState, useRef } from "react";
 import { FaFacebook, FaTwitter, FaGithub } from "react-icons/fa";
 import AbsCenter from "../layout/absCenter";
@@ -23,6 +30,7 @@ const FormLogin = () => {
   const [submitErr, setSubmitErr] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const emailInput = useRef("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const passwordInput = useRef("");
   const submitLoginHandler = async e => {
@@ -175,18 +183,34 @@ const FormLogin = () => {
             justifyContent={"center"}
             gap={"3"}
           >
-            <Button px={"10"} py={"7"} fontSize={"xl"} textAlign={"center"}>
+            <Button px={"10"} py={"7"} fontSize={"xl"} textAlign={"center"} onClick={onOpen}>
               <FaFacebook />
             </Button>
-            <Button px={"10"} py={"7"} fontSize={"xl"}>
+            <Button px={"10"} py={"7"} fontSize={"xl"} onClick={onOpen}>
               <FaTwitter />
             </Button>
-            <Button px={"10"} py={"7"} fontSize={"xl"}>
+            <Button px={"10"} py={"7"} fontSize={"xl"} onClick={onOpen}>
               <FaGithub />
             </Button>
           </Box>
         </FormControl>
       </AbsCenter>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Thông báo</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontSize={"2xl"}>Tính năng này chưa được thêm</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="cyan" variant={"outline"} onClick={onClose} fontSize={"2xl"}>
+              Đóng
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

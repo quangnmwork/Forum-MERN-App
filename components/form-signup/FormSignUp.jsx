@@ -1,15 +1,4 @@
-import {
-  FormControl,
-  FormLabel,
-  HStack,
-  Input,
-  Box,
-  Text,
-  Image,
-  Flex,
-  Button,
-  FormErrorMessage,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, HStack, Input, Box, Text, Flex, Button } from "@chakra-ui/react";
 import React, { useState, useRef } from "react";
 import AbsCenter from "../layout/absCenter";
 import { RepositoryFactory } from "./../../api-factory/repositoryFactory";
@@ -33,7 +22,7 @@ const FormSignUp = () => {
       const password = passwordInput.current.value;
       const name = nameInput.current.value;
       const passwordConfirm = passwordConfirmInput.current.value;
-      console.log(email, password, name, passwordConfirm);
+      // console.log(email, password, name, passwordConfirm);
       if (!email.trim() || !password.trim() || !name.trim() || !passwordConfirm.trim()) {
         throw new Error("Vui lòng điền đầy đủ thông tin");
       } else if (!email.includes("@")) {
@@ -46,8 +35,11 @@ const FormSignUp = () => {
       setIsLoading(true);
       const res = await userRespository.signup({ name, email, password, passwordConfirm });
       if (res.status == 201) {
-        setErrMessage(res.data.message);
+        setErrMessage("Đăng kí thành công");
         setSubmitErr(false);
+        setTimeout(() => {
+          Router.replace("/login");
+        }, 1000);
       }
       setIsLoading(false);
     } catch (err) {

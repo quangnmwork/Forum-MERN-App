@@ -14,7 +14,7 @@ const CommentList = props => {
     setCommentData(props.comment?.data.length);
   }, [props.comment?.data]);
   return (
-    <Box my={"12"}>
+    <Box my={"12"} borderTop={"1px solid gray"}>
       {props.comment != undefined
         ? props.comment.data
             .slice(0, maxItem)

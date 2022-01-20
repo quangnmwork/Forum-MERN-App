@@ -21,7 +21,7 @@ const Main = props => {
   };
   return (
     <Flex mt={"24"}>
-      <Box width={"80%"} mx={"auto"}>
+      <Box width={{ base: "98%", lg: "80%" }} mx={"auto"}>
         <Tabs isFitted variant="enclosed" colorScheme="cyan" ml={"10"} defaultIndex={getDefaultIndex}>
           <TabList>
             <Tab

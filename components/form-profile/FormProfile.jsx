@@ -150,46 +150,52 @@ const FormProfile = () => {
               <FormLabel htmlFor="intro" fontSize={"2xl"}>
                 Giới thiệu bản thân
               </FormLabel>
-              <Textarea
-                id="intro"
-                type="text"
-                p={"5"}
-                fontSize={"2xl"}
-                placeholder="Giới thiệu bản thân  của bạn"
-                ref={aboutMeInput}
-                defaultValue={currentUser.aboutMe || ""}
-                onChange={() => inputOnchange()}
-              />
+              <Skeleton isLoaded={currentUser.name}>
+                <Textarea
+                  id="intro"
+                  type="text"
+                  p={"5"}
+                  fontSize={"2xl"}
+                  placeholder="Giới thiệu bản thân  của bạn"
+                  ref={aboutMeInput}
+                  defaultValue={currentUser.aboutMe || ""}
+                  onChange={() => inputOnchange()}
+                />
+              </Skeleton>
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="contact" fontSize={"2xl"}>
                 Liên hệ
               </FormLabel>
-              <Input
-                id="contact"
-                type="text"
-                p={"5"}
-                fontSize={"2xl"}
-                ref={contactLinkInput}
-                defaultValue={currentUser.contactLink || ""}
-                onChange={() => inputOnchange()}
-              />
+              <Skeleton isLoaded={currentUser.name}>
+                <Input
+                  id="contact"
+                  type="text"
+                  p={"5"}
+                  fontSize={"2xl"}
+                  ref={contactLinkInput}
+                  defaultValue={currentUser.contactLink || ""}
+                  onChange={() => inputOnchange()}
+                />
+              </Skeleton>
             </FormControl>
 
             <FormControl>
               <FormLabel htmlFor="phone" fontSize={"2xl"}>
                 Số điện thoại
               </FormLabel>
-              <Input
-                id="phone"
-                type="number"
-                p={"5"}
-                placeholder="Tùy chọn"
-                fontSize={"2xl"}
-                ref={phoneNumberInput}
-                defaultValue={currentUser.phoneNumber || ""}
-                onChange={() => inputOnchange()}
-              />
+              <Skeleton isLoaded={currentUser.name}>
+                <Input
+                  id="phone"
+                  type="number"
+                  p={"5"}
+                  placeholder="Tùy chọn"
+                  fontSize={"2xl"}
+                  ref={phoneNumberInput}
+                  defaultValue={currentUser.phoneNumber || ""}
+                  onChange={() => inputOnchange()}
+                />
+              </Skeleton>
             </FormControl>
             <Text fontSize={"2xl"} my={"3"} color={submitErr ? "red" : "green"}>
               {submitMessage}

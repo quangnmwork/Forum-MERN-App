@@ -45,6 +45,7 @@ const Navigation = () => {
             objectFit="cover"
             src="/static/logo.svg"
             alt="logo"
+            cursor={"pointer"}
             onClick={() => {
               Router.replace("/");
             }}
