@@ -14,6 +14,10 @@ const commentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  isDelete: {
+    type: Boolean,
+    default: false,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

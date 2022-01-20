@@ -14,14 +14,14 @@ const createToken = id => {
 
 const sendToken = async (user, statusCode, req, res) => {
   const token = createToken(user._id);
-  console.log("token: ", token);
+  // console.log("token: ", token);
   // res.cookie("jwt", token, {
   //   expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
   //   httpOnly: false,
   //   secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   // });
   user.password = undefined;
-  console.log(user.email, user._id);
+  // console.log(user.email, user._id);
 
   res.status(statusCode).json({
     status: "success",
@@ -45,7 +45,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   if (!email || !password) {
     return next(new AppError("Nhập đầy đủ email và password"));
   }
@@ -134,7 +134,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id).select("+password");
-  console.log(user);
+  // console.log(user);
   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
     return next(new AppError("Mật khẩu hiện tại của bạn nhập không đúng", 401));
   }

@@ -28,4 +28,10 @@ router
     commentController.deleteComment
   );
 
+//for admin only
+
+router
+  .route("/admin/:id")
+  .delete(authController.protect, authController.restrictTo("admin"), commentController.deleteCommentAdmin);
+
 module.exports = router;

@@ -11,7 +11,7 @@ exports.setBlogUserIds = (req, res, next) => {
 
 exports.checkBlogBelongUser = catchAsync(async (req, res, next) => {
   const comment = await Comment.findById(req.params.id);
-  console.log(comment.user.id == req.user.id);
+  // console.log(comment.user.id == req.user.id);
   if (req.user.id != comment.user.id) {
     return next(new AppError("Comment này không thuộc về bạn"), 401);
   } else return next();
@@ -22,6 +22,18 @@ exports.getCommentByBlogId = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "sucess",
     data: comments,
+  });
+});
+exports.deleteCommentAdmin = catchAsync(async (req, res, next) => {
+  const doc = await Comment.findByIdAndUpdate(req.params.id, { isDelete: true });
+
+  if (!doc) {
+    return next(new AppError("Không có blog ứng với id này", 404));
+  }
+
+  res.status(204).json({
+    status: "success",
+    data: null,
   });
 });
 
