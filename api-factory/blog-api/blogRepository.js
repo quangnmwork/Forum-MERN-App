@@ -10,7 +10,7 @@ export default {
     return repository.get(`${resource}/${id}`);
   },
   postBlog(payload) {
-    return repository.get(`${resource}`, payload);
+    return repository.post(`${resource}`, payload);
   },
   updateBlog(id, payload) {
     return repository.patch(`${resource}/${id}`, payload);

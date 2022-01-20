@@ -40,7 +40,7 @@ const NavigationAvatar = props => {
               <MenuItem
                 fontSize={"2xl"}
                 onClick={() => {
-                  Router.replace("/userProfile/accountSetting");
+                  Router.replace(`/user/${props.currentUser.id}`);
                 }}
               >
                 Thông tin cá nhân
@@ -48,7 +48,7 @@ const NavigationAvatar = props => {
               <MenuItem
                 fontSize={"2xl"}
                 onClick={() => {
-                  Router.replace("/userProfile/security");
+                  Router.replace("/userProfile/accountSetting");
                 }}
               >
                 Bảo mật

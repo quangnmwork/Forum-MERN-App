@@ -22,7 +22,7 @@ import NavigationSearch from "./NavigationSearch";
 const NavigationButtonResponsive = props => {
   const user = useSelector(state => state.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log(user);
+  // console.log(user);
   return (
     <Box display={{ base: "block", md: "none" }}>
       <Box>

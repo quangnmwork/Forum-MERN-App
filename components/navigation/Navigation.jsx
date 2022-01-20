@@ -10,7 +10,7 @@ import Router from "next/router";
 import { AddIcon } from "@chakra-ui/icons";
 const Navigation = () => {
   const user = useSelector(state => state.user);
-  console.log("State user", user.isLogin);
+  // console.log("State user", user.isLogin);
   const [currentUser, setCurrentUser] = useState({});
   const dispatch = useDispatch();
   useEffect(() => {
@@ -61,6 +61,9 @@ const Navigation = () => {
             py={"3"}
             color={"white"}
             display={user.isLogin ? "block" : "none"}
+            onClick={() => {
+              Router.replace("/createPost");
+            }}
           >
             <Flex alignItems={"center"} gap={"5"}>
               <Text>Tạo bài viết</Text>

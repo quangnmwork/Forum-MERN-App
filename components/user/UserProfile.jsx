@@ -56,7 +56,7 @@ const UserProfile = props => {
   const isFollow = user.followers.some(follower => follower.id == currentUser.id);
 
   const initFollow = isFollow ? "Unfollow" : "Follow";
-  console.log(isFollow);
+
   const [followState, setFollowState] = useState(user.id == currentUser.id ? "Edit Profile" : `${initFollow}`);
   return (
     <Box>
@@ -126,7 +126,7 @@ const UserProfile = props => {
                 </Flex>
               </TabPanel>
               <TabPanel>
-                <UserPostList blogs={user.blogs} />
+                <UserPostList blogs={user.blogs} id={currentUser.id} />
               </TabPanel>
             </TabPanels>
           </Tabs>

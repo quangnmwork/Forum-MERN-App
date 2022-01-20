@@ -1,13 +1,7 @@
 const removeImports = require("next-remove-imports")();
 
-const MD = (phase, { defaultConfig }) => {
-  return removeImports({
-    ...defaultConfig,
-  });
-};
-module.exports = {
-  MD,
+module.exports = removeImports({
   images: {
     domains: ["res.cloudinary.com"],
   },
-};
+});

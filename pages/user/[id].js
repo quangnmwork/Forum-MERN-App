@@ -31,7 +31,7 @@ export async function getStaticPaths() {
         id: slug,
       },
     })),
-    fallback: "blocking",
+    fallback: false,
   };
 }
 
