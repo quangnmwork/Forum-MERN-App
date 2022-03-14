@@ -37,7 +37,14 @@ exports.deleteCommentAdmin = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllComments = factory.getAll(Comment);
+exports.getAllComments = catchAsync(async (req, res, next) => {
+  const comments = await Comment.find({});
+  res.status(200).json({
+    status: "success",
+    length: comments.length,
+    data: comments,
+  });
+});
 exports.getComment = factory.getOne(Comment);
 exports.createComment = factory.createOne(Comment);
 exports.updateComment = factory.updateOne(Comment);

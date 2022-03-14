@@ -1,7 +1,8 @@
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 
-dotenv.config({ path: "config.env" });
+dotenv.config({ path: "./../config.env" });
+
 console.log(process.env.EMAIL_PASSWORD, process.env.EMAIL_USERNAME);
 module.exports = class Email {
   constructor(user, code) {

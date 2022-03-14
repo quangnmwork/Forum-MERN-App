@@ -53,7 +53,10 @@ commentSchema.statics.calcAvgRatings = async function (blogId) {
   ]);
   console.log(stats);
   if (stats.length > 0) {
-    await Blog.findByIdAndUpdate(blogId, { ratingsQuantity: stats[0].nRating, ratingsAvg: stats[0].avgRating });
+    await Blog.findByIdAndUpdate(blogId, {
+      ratingsQuantity: stats[0].nRating,
+      ratingsAvg: stats[0].avgRating,
+    });
   } else {
     await Blog.findByIdAndUpdate(blogId, {
       ratingsQuantity: 0,
@@ -72,7 +75,6 @@ commentSchema.pre(/^findOneAnd/, async function (next) {
 });
 
 commentSchema.post(/^findOneAnd/, async function () {
-  // await this.findOne(); does NOT work here, query has already executed
   await this.r.constructor.calcAvgRatings(this.r.blog);
 });
 

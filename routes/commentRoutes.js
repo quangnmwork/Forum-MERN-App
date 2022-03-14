@@ -5,7 +5,7 @@ const commentController = require("./../controllers/commentController");
 
 const router = express.Router({ mergeParams: true });
 
-router.get("/debug", commentController.getAllComments);
+router.get("/admin", commentController.getAllComments);
 
 router
   .route("/")

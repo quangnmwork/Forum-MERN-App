@@ -6,7 +6,7 @@ const AppError = require("./../utils/appError");
 const Email = require("./../utils/email");
 const crypto = require("crypto");
 
-const createToken = id => {
+const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
@@ -59,20 +59,28 @@ exports.login = catchAsync(async (req, res, next) => {
 
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
-  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
     token = req.headers.authorization.split(" ")[1];
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
 
-  if (!token) return next(new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401));
+  if (!token)
+    return next(
+      new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401)
+    );
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   const user = await User.findById(decoded.id);
   if (!user) {
     return next(new AppError("Tài khoản không còn tồn tại", 401));
   }
   if (user.changedPasswordAfter(decoded.iat)) {
-    return next(new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401));
+    return next(
+      new AppError("Phiên của bạn đã hết hạn, vui lòng đăng nhập lại", 401)
+    );
   }
   req.user = user;
   next();
@@ -105,6 +113,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       message: "Vui lòng check email của bạn",
     });
   } catch (err) {
+    console.log(err);
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
@@ -114,7 +123,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
-  const hashedToken = crypto.createHash("sha256").update(req.body.resetToken).digest("hex");
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.body.resetToken)
+    .digest("hex");
   // console.log(req.body.resetToken);
   const user = await User.findOne({
     passwordResetToken: hashedToken,
